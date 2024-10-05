@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import { signup, signin } from "../controllers/auth"
 const router = Router();
 
 router.get('/', (req: Request, res: Response) => {
@@ -11,9 +12,9 @@ router.get('/teste', (req: Request, res: Response) => {
 
 
 //cadatrar
-// router.post('/auth/signup', auth.signup)
+router.post('/auth/signup', signup)
 //login
-// router.post('/auth/signin', auth.signin)
+router.post('/auth/signin', signin)
 
 
 //Tweets

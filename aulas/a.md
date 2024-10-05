@@ -9,3 +9,9 @@
 - Hashtags
     - Pega na hora de salvar
     - Criar uma tabela para armazenar todas as hashtags e incrementar se repetida
+
+
+
+# Auth
+- bcrypt-ts; slug (gerar ele); jsonwebtoken (os 2 ultimos precisam de types)
+- 
