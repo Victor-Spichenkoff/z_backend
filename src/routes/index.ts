@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { signup, signin } from "../controllers/auth"
+import { signup, signin, privateMiddelware } from "../controllers/auth"
 const router = Router();
 
 router.get('/', (req: Request, res: Response) => {
@@ -40,4 +40,13 @@ router.post('/auth/signin', signin)
 // router.get('/trending', )
 // router.get('/suggestions', )
 // router.get('/teste/private', auth.teste)
+
+
+router.use(privateMiddelware)
+router.get('/private/teste', (req: Request, res: Response) => {
+    res.send('Testado 👍 privado 🔒')
+})
+
+
+
 export default router

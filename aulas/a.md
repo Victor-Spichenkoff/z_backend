@@ -1,3 +1,12 @@
+# DICAS
+- Como usar os dados certos de criação/edição pelo prisma
+```
+Prisma.UserCreateInput
+```
+- Se for logar e não tiver email com aquela, apenas dizer "negado", pois evita que descubram email válidos
+
+
+
 # Incicio do projeto
 # 1
 - helmet: Proteções extras
@@ -12,6 +21,26 @@
 
 
 
+
 # Auth
 - bcrypt-ts; slug (gerar ele); jsonwebtoken (os 2 ultimos precisam de types)
-- 
+    - bcryptjs é melhor
+- O token que usa secret só no servidor
+```
+    jwt.sign(
+        {//payload
+            slug
+        },
+        String(process.env.SECRET)
+    )
+```
+- Permitir passar dados para o proximo via req. algo:
+```
+export type ExpandedRequestMiddleware =  Request & { 
+    userSlug: string
+}
+
+
+
+
+```
