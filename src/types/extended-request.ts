@@ -1,5 +1,5 @@
 import { Request } from "express"
 
-export type ExpandedRequest =  Request & { 
+export type ExtendedRequest =  Request & { 
     userSlug?: string
 }

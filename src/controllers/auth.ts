@@ -6,7 +6,7 @@ import { compare, hash } from "bcryptjs"
 import { createJWT } from "../utils/jwt"
 import { signinSchema } from "../schemas/signin"
 import jwt from 'jsonwebtoken'
-import { ExpandedRequest } from "../types/extended-request"
+import { ExtendedRequest } from "../types/extended-request"
 
 
 //criar e devolver o token
@@ -103,7 +103,7 @@ export const signin: RequestHandler = async (req, res): Promise<any> => {
 
 
 // export const privateMiddelware: RequestHandler = async (req, res, next): Promise<any> => {
-export const privateMiddelware: RequestHandler = async (req: ExpandedRequest, res: Response, next: NextFunction): Promise<any> => {
+export const privateMiddelware: RequestHandler = async (req: ExtendedRequest, res: Response, next: NextFunction): Promise<any> => {
     const authHeader: any = req.headers.authorization
 
     if(!authHeader)
@@ -125,9 +125,9 @@ export const privateMiddelware: RequestHandler = async (req: ExpandedRequest, re
                 return res.status(401).send({ error: "Acesso negado" })
 
             //tudo certo
-            // req.userSlug = user.slug
+            req.userSlug = user.slug
+
+            next() //tem que ficar aqui
         }
     )
-
-    next() 
 }
