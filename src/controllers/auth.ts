@@ -112,6 +112,7 @@ export const privateMiddelware: RequestHandler = async (req: ExtendedRequest, re
 
     const token = authHeader.split(" ")[1]
 
+
     jwt.verify(
         token,
         String(process.env.SECRET),

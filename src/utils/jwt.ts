@@ -3,8 +3,11 @@ import jwt from "jsonwebtoken"
 export const createJWT = (slug: string) =>  (
     jwt.sign(
         {//payload
-            slug
+            slug,
         },
-        String(process.env.SECRET)  
+        String(process.env.SECRET),
+        {
+            expiresIn: 1_000 * 60
+        }
     )
 )
