@@ -1,13 +1,3 @@
-# DICA
-- pesquisa no prisma:
-```
-where: {
-    body: { 
-        contains: textQueVaiComparar,
-        // mode: "insensitive"//acho que é default
-    }
-},
-```
 
 # Sugestões (raw)
 ```

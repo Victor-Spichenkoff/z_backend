@@ -14,8 +14,7 @@ export const signup: RequestHandler = async (req, res): Promise<any> => {
     // const { hash } = await import("bcrypt-ts")
 
     //verificações (email e slug)
-    const validatedData = signupSchema.safeParse(req.body)
-
+    const validatedData =  signupSchema.safeParse(req.body)
     if (!validatedData.success)
         return res.status(400).send({ error: validatedData.error.flatten().fieldErrors })
 

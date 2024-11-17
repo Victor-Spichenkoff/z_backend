@@ -1,10 +1,3 @@
-# DICAS
-- Como usar os dados certos de criação/edição pelo prisma
-```
-Prisma.UserCreateInput
-```
-- Se for logar e não tiver email com aquela, apenas dizer "negado", pois evita que descubram email válidos
-
 
 
 # Incicio do projeto

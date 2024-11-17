@@ -17,6 +17,9 @@ router.get('/teste', (req: Request, res: Response) => {
     res.send('Testado 👍')
 })
 
+router.get("/static", (req, res, next) => {
+    next()
+})
 
 
 
