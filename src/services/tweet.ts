@@ -1,3 +1,4 @@
+import { string } from "zod"
 import { db } from "../lib/db"
 import { getPublicUrl } from "../utils/url"
 
@@ -157,37 +158,38 @@ export const findTweetFeed = async (following: string[], currentPage: number, pe
 } 
 
 
-export const findTweetsByBody = async (bodyContains: string, currentPage: number, perPage: number) => {
-    const tweets = await db.tweet.findMany({
-        include: {
-            user: {
-                select: {
-                    name: true,
-                    avatar: true,
-                    slug: true
+export const findTweetsByBody = async (bodyContains: string, currentPage: number, perPage: number) => { 
+
+        const tweets = await db.tweet.findMany({
+            include: {
+                user: {
+                    select: {
+                        name: true,
+                        avatar: true,
+                        slug: true
+                    }
+                },
+                likes: {
+                    select: {
+                        userSlug: true
+                    }
                 }
             },
-            likes: {
-                select: {
-                    userSlug: true
-                }
-            }
-        },
-        where: {
-            body: { 
-                contains: bodyContains,
-                // mode: "insensitive"
+            where: {
+                body: { 
+                    contains: bodyContains,
+                    // mode: "insensitive"
+                },
+                answerOf: 0
             },
-            answerOf: 0
-        },
-        orderBy: { createdAt: "desc" },
-        skip: currentPage * perPage,
-        take: perPage
-    })
-
-    for (let tweetsIndex in tweets) 
-        tweets[tweetsIndex].user.avatar = getPublicUrl(tweets[tweetsIndex].user.avatar)  
-
-
-    return tweets
+            orderBy: { createdAt: "desc" },
+            skip: currentPage * perPage,
+            take: perPage
+        })
+    
+        for (let tweetsIndex in tweets) 
+            tweets[tweetsIndex].user.avatar = getPublicUrl(tweets[tweetsIndex].user.avatar)  
+    
+    
+        return tweets
 }

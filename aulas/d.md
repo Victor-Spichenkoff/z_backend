@@ -40,3 +40,10 @@ where: {
 
 # DICAS
 - sticky -> para deixar o menu colocado em um ponto, só o feed deve rolar
+
+
+
+# ENTER NO formulário
+- O Input deve aceitar a função de "onEnter"
+```
+```

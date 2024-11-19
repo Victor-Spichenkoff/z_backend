@@ -13,8 +13,15 @@ export const searchTweets = async (req: ExtendedRequest, res: Response): Promise
     let perPage = 2
     let currentPage = validatedData.data.page ?? 0
 
+
+    let finalQuery = validatedData.data.q
+
+    if(finalQuery.includes("+"))
+        finalQuery = finalQuery.split("+").filter(fq => fq != "").join(" ")
+
+    console.log(finalQuery)
     const tweets = await findTweetsByBody(
-        validatedData.data.q,
+        finalQuery,
         currentPage,
         perPage
     )
