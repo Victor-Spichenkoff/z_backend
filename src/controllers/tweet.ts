@@ -3,9 +3,14 @@ import { addTweetSchema } from "../schemas/tweet"
 import { checkIfTweetIslikedByUser, createTweet, findAnswersFromTweet, findtweetById, likeTweet, unlikeTweet } from "../services/tweet"
 import { ExtendedRequest } from "../types/extended-request"
 import { addHashtag } from "../services/trend"
+import { findUserBySlug } from "../services/user"
+import { db } from "../lib/db"
+import { deleteImage } from "../utils/image"
 
 
 export const addTweet: RequestHandler = async (req: ExtendedRequest, res): Promise<any> => {
+    const image = req.file
+
     const safeData = addTweetSchema.safeParse(req.body)
     if (!safeData.success)
         return res.status(400).send({ error: safeData.error.flatten().fieldErrors })
@@ -17,11 +22,16 @@ export const addTweet: RequestHandler = async (req: ExtendedRequest, res): Promi
             return res.status(400).send({ error: "Tweet original inexistente" })
     }
 
+    const userExists = await findUserBySlug(String(req.userSlug))
+    if (!userExists)
+        return res.status(400).send({ error: "Usuário inexistente" })
+
 
     // criação
     const newTweet = await createTweet(
         req.userSlug, //vem do middleware
         safeData.data.body,
+        image?.filename,
         safeData.data.answer ? Number(safeData.data.answer) : 0
     )
 
@@ -83,4 +93,34 @@ export const likeToggle = async (req: ExtendedRequest, res: Response) => {
         )
 
     res.send({ like: !isLiked })
+}
+
+
+export const deleteTweet = async (req: any, res: any) => {
+    const { id } = req.params
+
+    try {
+        const tweet = await db.tweet.findFirst({
+            where: {
+                id: Number(id)
+            }
+        })
+
+        if(tweet?.image)
+            deleteImage(tweet.image)
+        console.log("Apos apagar iamgem")
+
+        const affected = await db.tweet.deleteMany({
+            where: {
+                id: Number(id)
+            }
+        })
+
+        if (affected.count > 0)
+            return res.status(202).send("Apagado")
+
+        return res.status(400).send({ error: "Não foi possível apagar o tweet" })
+    } catch {
+        return res.status(400).send({ error: "Não foi possível apagar o tweet" })
+    }
 }

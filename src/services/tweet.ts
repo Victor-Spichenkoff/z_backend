@@ -28,8 +28,7 @@ export const findtweetById = async (id: number | string) => {
 }
 
 
-export const createTweet = async (userSlug?: string, body?: string, answerOf?: number) => {
-    console.log(userSlug, body)
+export const createTweet = async (userSlug?: string, body?: string, imageName?: string, answerOf?: number) => {
     if (!body || !userSlug)
         return null
 
@@ -37,6 +36,7 @@ export const createTweet = async (userSlug?: string, body?: string, answerOf?: n
         data: {
             body,
             userSlug,
+            image: imageName ?? null,
             answerOf: answerOf ?? 0
         }
     })
