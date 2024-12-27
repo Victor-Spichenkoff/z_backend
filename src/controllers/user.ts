@@ -1,10 +1,11 @@
 import { RequestHandler, Response } from "express";
-import { checkIfFollows, findUserBySlug, follow, getUserFollowersCount, getUserFollowingNow, getUserTweetsCount, unfollow, updateUserInfo } from "../services/user";
+import { checkIfFollows, findUserBySlug, follow, getFollowStateForUser, getUserFollowersCount, getUserFollowingNow, getUserTweetsCount, unfollow, updateUserInfo } from "../services/user";
 import { ExtendedRequest } from "../types/extended-request";
 import { userTweetsSchema } from "../schemas/userTweet";
 import { findTweetsByUser } from "../services/tweet";
 import { error } from "console";
 import { updateUserSchema } from "../schemas/updateUser";
+import { db } from "../lib/db";
 
 export const getUser = async (req: ExtendedRequest, res: Response): Promise<any> => {
     const { slug } = req.params
@@ -77,5 +78,16 @@ export const updateUser: RequestHandler = async (req: ExtendedRequest, res): Pro
 
     await updateUserInfo(userSlug, validatedData.data)
 
-    res.json({})
+    res.send("Salvo com sucesso")
+}
+
+
+
+export const getCurrentStateOfFollow = async (req: ExtendedRequest, res: Response): Promise<any> => {
+    const userSlug = String(req.userSlug)
+    const checkSlug = String(req.params.checkSlug)
+
+    const isFollowing = await getFollowStateForUser(userSlug, checkSlug)
+
+    res.send(isFollowing)
 }

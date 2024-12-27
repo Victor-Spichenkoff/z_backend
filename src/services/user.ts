@@ -174,3 +174,17 @@ export const getUserSuggestions = async (userSlug: string) => {
 
     return suggestions
 }
+
+export const getFollowStateForUser = async (loggedUSerSlug: string, checkUserSlug: string) => {
+    const res = await db.folow.count({
+        where: {
+            user1Slug: loggedUSerSlug,
+            user2Slug: checkUserSlug
+        }
+    })
+
+    if(res > 0)
+        return true
+
+    return false
+}

@@ -91,8 +91,23 @@ export const likeToggle = async (req: ExtendedRequest, res: Response) => {
             String(req.userSlug),
             Number(id)
         )
+        
+    const count = await db.tweetLike.count({
+        where: { tweetId: Number(id) }
+    })
 
-    res.send({ like: !isLiked })
+    res.send({ like: !isLiked, likesCount: count })
+}
+
+export const getLikeStatusForUser: RequestHandler = async (req: ExtendedRequest, res) => {
+    const { id } = req.params
+
+    const isLiked = await checkIfTweetIslikedByUser(
+        String(req.userSlug),
+        Number(id)
+    )
+
+    res.send(isLiked)
 }
 
 
@@ -106,7 +121,7 @@ export const deleteTweet = async (req: any, res: any) => {
             }
         })
 
-        if(tweet?.image)
+        if (tweet?.image)
             deleteImage(tweet.image)
         console.log("Apos apagar iamgem")
 

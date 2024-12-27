@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { signup, signin, privateMiddelware } from "../controllers/auth"
-import { addTweet, deleteTweet, getAnswers, getTweetById, likeToggle } from '../controllers/tweet'
-import { followToggle, getUser, getUserTweets, updateUser } from "../controllers/user"
+import { addTweet, deleteTweet, getAnswers, getLikeStatusForUser, getTweetById, likeToggle } from '../controllers/tweet'
+import { followToggle, getCurrentStateOfFollow, getUser, getUserTweets, updateUser } from "../controllers/user"
 import { getFeed } from '../controllers/feed';
 import { searchTweets } from '../controllers/search';
 import { getTrends } from '../controllers/trend';
@@ -39,6 +39,7 @@ router.use(privateMiddelware)
 router.post('/tweet', UploadMiddleaware.single("image"), addTweet)
 router.get('/tweet/:id', getTweetById)
 router.get('/tweet/:id/answers', getAnswers)
+router.get("/tweet/:id/likes", getLikeStatusForUser)
 router.post('/tweet/:id/like', likeToggle)//toggle like
 router.delete("/tweet/:id", deleteTweet)
 
@@ -46,6 +47,7 @@ router.delete("/tweet/:id", deleteTweet)
 //USER
 router.get('/user/:slug', getUser)
 router.get('/user/:slug/tweets', getUserTweets)
+router.get('/user/follow/state/:checkSlug', getCurrentStateOfFollow)
 router.post("/user/:slug/follow", followToggle) //toggle
 router.put('/user', updateUser)//avatar e image separados
 // router.get('/user/avatar', )

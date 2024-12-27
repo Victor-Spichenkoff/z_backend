@@ -13,7 +13,8 @@ app.use(helmet())
 app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-app.use('/static', express.static(path.join(__dirname, '../public')))
+// app.use('/static', express.static(path.join(__dirname, '../public')))
+app.use('/static', express.static(path.join(__dirname, '../public/static')))
 
 //router
 app.use(mainRouter)

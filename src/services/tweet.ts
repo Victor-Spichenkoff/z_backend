@@ -113,6 +113,13 @@ export const findTweetsByUser = async (slug: string, currentPage: number, perPag
                 select: {
                     userSlug: true
                 }
+            },
+            user: {
+                select: {
+                    slug: true,
+                    name: true,
+                    avatar: true
+                }
             }
         },
         where: { userSlug: slug, answerOf: 0 },//só os originais
@@ -120,6 +127,12 @@ export const findTweetsByUser = async (slug: string, currentPage: number, perPag
         skip: currentPage * perPage,
         take: perPage
     })
+
+    for (let tweet of tweets) {
+        tweet.user.avatar = getPublicUrl(tweet.user.avatar)
+        if (tweet.image)
+            tweet.image = getPublicUrl(tweet.image)
+    }
 
     return tweets
 }
@@ -150,46 +163,62 @@ export const findTweetFeed = async (following: string[], currentPage: number, pe
     })
 
 
-    for (let tweetsIndex in tweets) 
-        tweets[tweetsIndex].user.avatar = getPublicUrl(tweets[tweetsIndex].user.avatar)  
+    for (let tweetsIndex in tweets)
+    {
+        tweets[tweetsIndex].user.avatar = getPublicUrl(tweets[tweetsIndex].user.avatar)
+        if ( tweets[tweetsIndex].image)
+             tweets[tweetsIndex].image = getPublicUrl( tweets[tweetsIndex].image)
+    }
+
+    let finalTweets: any = tweets
+
+    for (let tweet of finalTweets) {
+        const commnetsCount = await db.tweet.count({
+            where: {
+                answerOf: tweet.id
+            }
+        })
+
+        tweet.commentCount = commnetsCount
+    }
+
+
+    return finalTweets
+}
+
+
+export const findTweetsByBody = async (bodyContains: string, currentPage: number, perPage: number) => {
+
+    const tweets = await db.tweet.findMany({
+        include: {
+            user: {
+                select: {
+                    name: true,
+                    avatar: true,
+                    slug: true
+                }
+            },
+            likes: {
+                select: {
+                    userSlug: true
+                }
+            }
+        },
+        where: {
+            body: {
+                contains: bodyContains,
+                // mode: "insensitive"
+            },
+            answerOf: 0
+        },
+        orderBy: { createdAt: "desc" },
+        skip: currentPage * perPage,
+        take: perPage
+    })
+
+    for (let tweetsIndex in tweets)
+        tweets[tweetsIndex].user.avatar = getPublicUrl(tweets[tweetsIndex].user.avatar)
 
 
     return tweets
-} 
-
-
-export const findTweetsByBody = async (bodyContains: string, currentPage: number, perPage: number) => { 
-
-        const tweets = await db.tweet.findMany({
-            include: {
-                user: {
-                    select: {
-                        name: true,
-                        avatar: true,
-                        slug: true
-                    }
-                },
-                likes: {
-                    select: {
-                        userSlug: true
-                    }
-                }
-            },
-            where: {
-                body: { 
-                    contains: bodyContains,
-                    // mode: "insensitive"
-                },
-                answerOf: 0
-            },
-            orderBy: { createdAt: "desc" },
-            skip: currentPage * perPage,
-            take: perPage
-        })
-    
-        for (let tweetsIndex in tweets) 
-            tweets[tweetsIndex].user.avatar = getPublicUrl(tweets[tweetsIndex].user.avatar)  
-    
-    
-        return tweets
 }

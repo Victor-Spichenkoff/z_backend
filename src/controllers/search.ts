@@ -19,7 +19,6 @@ export const searchTweets = async (req: ExtendedRequest, res: Response): Promise
     if(finalQuery.includes("+"))
         finalQuery = finalQuery.split("+").filter(fq => fq != "").join(" ")
 
-    console.log(finalQuery)
     const tweets = await findTweetsByBody(
         finalQuery,
         currentPage,
