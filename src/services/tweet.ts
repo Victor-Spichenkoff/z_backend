@@ -217,7 +217,12 @@ export const findTweetsByBody = async (bodyContains: string, currentPage: number
     })
 
     for (let tweetsIndex in tweets)
+    {
         tweets[tweetsIndex].user.avatar = getPublicUrl(tweets[tweetsIndex].user.avatar)
+        if( tweets[tweetsIndex].image)
+        tweets[tweetsIndex].image = getPublicUrl(tweets[tweetsIndex].image)
+
+    }
 
 
     return tweets
