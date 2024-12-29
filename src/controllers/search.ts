@@ -6,7 +6,7 @@ import { findTweetsByBody } from "../services/tweet";
 export const searchTweets = async (req: ExtendedRequest, res: Response): Promise<any> => {
     let { q, page } = req.query
 
-    if(!page || !q)
+    if(page == null || Number(page) < 0 || !q)
         return res.status(400).send({ error: "Erro interno" })
 
     page = String(page)
