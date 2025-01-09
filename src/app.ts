@@ -9,7 +9,7 @@ const app = express()
 configDotenv()
 
 const corsOptions = {
-    origin: '*',
+    origin: process.env.ENV != "dev" && "https://z-frontend-seven.vercel.app",
 }
 
 //basic middlwares
