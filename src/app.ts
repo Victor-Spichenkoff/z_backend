@@ -8,9 +8,13 @@ import path from "path"
 const app = express()
 configDotenv()
 
+const corsOptions = {
+    origin: '*',
+}
+
 //basic middlwares
 app.use(helmet())
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 // app.use('/static', express.static(path.join(__dirname, '../public')))
@@ -25,4 +29,4 @@ console.log(process.env.BASE_URL)
 
 const port = process.env.PORT ?? 2006
 
-app.listen(port, ()=> console.log(`Runnig on: http://localhost:${port}`))
+app.listen(port, () => console.log(`Runnig on: http://localhost:${port}`))
