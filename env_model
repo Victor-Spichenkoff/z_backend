@@ -1,0 +1,5 @@
+DATABASE_URL="file:./dev.db"
+NODE_ENV="development"
+BASE_URL="http://localhost:2006"
+SECRET=""
+ENV="dev"
