@@ -8,8 +8,26 @@ import path from "path"
 const app = express()
 configDotenv()
 
+const allowedOrigins = [
+    //front do Z e server-maint
+    "https://z-frontend-seven.vercel.app",
+    process.env.ENV == "dev" && "http://localhost:3000",
+    //back do server maintenance
+    "https://server-maintenance-ssu7.onrender.com",
+    "https://server-maintenance.vercel.app"
+]
+
 const corsOptions = {
-    origin: process.env.ENV == "dev" ? true : "https://z-frontend-seven.vercel.app",
+    origin: (origin: any, callback: any) => {
+        // Permitir requisições sem origem (por exemplo, Postman)
+        if (!origin) return callback(null, true)
+        
+        if (allowedOrigins.includes(origin)) {
+          callback(null, true) // Origem permitida
+        } else {
+          callback(new Error('Not allowed by CORS')) // Origem não permitida
+        }
+      },
 }
 
 //basic middlwares
