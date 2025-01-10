@@ -18,16 +18,17 @@ const allowedOrigins = [
 ]
 
 const corsOptions = {
-    origin: (origin: any, callback: any) => {
-        // Permitir requisições sem origem (por exemplo, Postman)
-        if (!origin) return callback(null, true)
+    origin: true
+    // origin: (origin: any, callback: any) => {
+    //     // Permitir requisições sem origem (por exemplo, Postman)
+    //     if (!origin) return callback(null, true)
         
-        if (allowedOrigins.includes(origin)) {
-          callback(null, true) // Origem permitida
-        } else {
-          callback(new Error('Not allowed by CORS')) // Origem não permitida
-        }
-      },
+    //     if (allowedOrigins.includes(origin)) {
+    //       callback(null, true) // Origem permitida
+    //     } else {
+    //       callback(new Error('Not allowed by CORS')) // Origem não permitida
+    //     }
+    //   },
 }
 
 //basic middlwares
