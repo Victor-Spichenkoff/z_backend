@@ -11,7 +11,7 @@ configDotenv()
 const allowedOrigins = [
     //front do Z e server-maint
     "https://z-frontend-seven.vercel.app",
-    process.env.ENV == "dev" && "http://localhost:3000",
+    "http://localhost:3000",
     //back do server maintenance
     "https://server-maintenance-ssu7.onrender.com",
     "https://server-maintenance.vercel.app"
